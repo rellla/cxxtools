@@ -6,7 +6,7 @@ LT_INIT([disable-static])
 
 AC_PREREQ([2.69])
 
-abi_current=12
+abi_current=13
 abi_revision=0
 abi_age=0
 sonumber=${abi_current}:${abi_revision}:${abi_age}
