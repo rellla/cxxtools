@@ -46,7 +46,10 @@ namespace
         if( ! cxxtools_signal_pipe )
         {
             cxxtools_signal_pipe = new cxxtools::Pipe(cxxtools::Pipe::Async);
-            cxxtools_signal_pipe->out().beginRead( _signalBuffer, sizeof(_signalBuffer) );
+            // in() is the readable end of the pipe, out() the writable end
+            // (see PipeImpl). The signal handler writes into out(); read from
+            // in() so the event loop is notified when a signal arrives.
+            cxxtools_signal_pipe->in().beginRead( _signalBuffer, sizeof(_signalBuffer) );
         }
     }
 
@@ -82,7 +85,8 @@ extern "C" void cxxtools_system_application_sighandler(int sigNo)
 {
     if (cxxtools_signal_pipe)
     {
-        cxxtools_signal_pipe->in().ioimpl().sigwrite(sigNo);
+        // out() is the writable end of the pipe (in() is the readable end).
+        cxxtools_signal_pipe->out().ioimpl().sigwrite(sigNo);
     }
 }
 
@@ -96,14 +100,14 @@ ApplicationImpl::ApplicationImpl()
 
 ApplicationImpl::~ApplicationImpl()
 {
-    disconnect(cxxtools_signal_pipe->out().inputReady, processSignal);
+    disconnect(cxxtools_signal_pipe->in().inputReady, processSignal);
 }
 
 
 void ApplicationImpl::init(SelectorBase& s)
 {
-    cxxtools_signal_pipe->out().setSelector(&s);
-    connect(cxxtools_signal_pipe->out().inputReady, processSignal);
+    cxxtools_signal_pipe->in().setSelector(&s);
+    connect(cxxtools_signal_pipe->in().inputReady, processSignal);
 }
 
 
