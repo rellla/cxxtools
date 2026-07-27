@@ -315,6 +315,11 @@ class Client
 
         unsigned short int port() const;
 
+        bool isConnected() const;
+        bool isSslConnected() const;
+        std::string getSockAddr() const;
+        std::string getPeerAddr() const;
+
         /** Sets the username and password for all subsequent requests.
 
             Basic authorization is used always.

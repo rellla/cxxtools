@@ -117,6 +117,48 @@ void RpcClient::connect()
     getImpl()->connect();
 }
 
+std::string RpcClient::host() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->addrInfo().host();
+}
+
+unsigned short RpcClient::port() const
+{
+    if (!_impl)
+        return 0;
+    return _impl->addrInfo().port();
+}
+
+bool RpcClient::isConnected() const
+{
+    if (!_impl)
+        return false;
+    return _impl->socket().isConnected();
+}
+
+bool RpcClient::isSslConnected() const
+{
+    if (!_impl)
+        return false;
+    return _impl->socket().isSslConnected();
+}
+
+std::string RpcClient::getSockAddr() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->socket().getSockAddr();
+}
+
+std::string RpcClient::getPeerAddr() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->socket().getPeerAddr();
+}
+
 void RpcClient::close()
 {
     if (_impl)

@@ -58,6 +58,8 @@ namespace json
         public:
             HttpClientImpl();
 
+            const http::Client& client() const { return _client; }
+
             void prepareConnect(const net::AddrInfo& addrinfo, const std::string& url)
             {
                 _client.prepareConnect(addrinfo);

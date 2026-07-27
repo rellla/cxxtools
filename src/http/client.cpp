@@ -48,6 +48,13 @@ ClientImpl* Client::getImpl()
     return _impl;
 }
 
+Client::Client(const Client& other)
+    : _impl(other._impl)
+{
+    if (_impl)
+        _impl->addRef();
+}
+
 Client& Client::operator= (const Client& other)
 {
     if (_impl && _impl->release() <= 0)
@@ -206,14 +213,48 @@ std::istream& Client::in()
     return _impl->in();
 }
 
+static const std::string emptyString;
+
 const std::string& Client::host() const
 {
-    return getImpl()->host();
+    if (!_impl)
+        return emptyString;
+    return _impl->host();
 }
 
 unsigned short int Client::port() const
 {
-    return getImpl()->port();
+    if (!_impl)
+        return 0;
+    return _impl->port();
+}
+
+bool Client::isConnected() const
+{
+    if (!_impl)
+        return false;
+    return _impl->socket().isConnected();
+}
+
+bool Client::isSslConnected() const
+{
+    if (!_impl)
+        return false;
+    return _impl->socket().isSslConnected();
+}
+
+std::string Client::getSockAddr() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->socket().getSockAddr();
+}
+
+std::string Client::getPeerAddr() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->socket().getPeerAddr();
 }
 
 void Client::auth(const std::string& username, const std::string& password)

@@ -72,6 +72,8 @@ class RpcClientImpl : public RefCounted, public Connectable
             _sslCtx = sslCtx;
         }
 
+        const net::AddrInfo& addrInfo() const   { return _addrInfo; }
+
         void connect();
 
         void close();

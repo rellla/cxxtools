@@ -141,6 +141,13 @@ class RpcClient : public RemoteClient
 
         void close();
 
+        std::string host() const;
+        unsigned short port() const;
+        bool isConnected() const;
+        bool isSslConnected() const;
+        std::string getSockAddr() const;
+        std::string getPeerAddr() const;
+
         void setSelector(SelectorBase* selector);
 
         void setSelector(SelectorBase& selector)  { setSelector(&selector); }

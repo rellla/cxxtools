@@ -126,6 +126,48 @@ void HttpClient::connect()
     getImpl()->connect();
 }
 
+std::string HttpClient::host() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->client().host();
+}
+
+unsigned short HttpClient::port() const
+{
+    if (!_impl)
+        return 0;
+    return _impl->client().port();
+}
+
+bool HttpClient::isConnected() const
+{
+    if (!_impl)
+        return false;
+    return _impl->client().isConnected();
+}
+
+bool HttpClient::isSslConnected() const
+{
+    if (!_impl)
+        return false;
+    return _impl->client().isSslConnected();
+}
+
+std::string HttpClient::getSockAddr() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->client().getSockAddr();
+}
+
+std::string HttpClient::getPeerAddr() const
+{
+    if (!_impl)
+        return std::string();
+    return _impl->client().getPeerAddr();
+}
+
 void HttpClient::url(const std::string& url)
 {
     getImpl()->url(url);

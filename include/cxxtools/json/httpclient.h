@@ -129,6 +129,13 @@ namespace json
 
             void connect();
 
+            std::string host() const;
+            unsigned short port() const;
+            bool isConnected() const;
+            bool isSslConnected() const;
+            std::string getSockAddr() const;
+            std::string getPeerAddr() const;
+
             void url(const std::string& url);
             void auth(const std::string& username, const std::string& password);
 
